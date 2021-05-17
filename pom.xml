@@ -4,21 +4,66 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>top.yuany3721.JX3Mirai</groupId>
+    <groupId>top.yuany3721.BulletBotServer</groupId>
     <artifactId>demo</artifactId>
     <version>0.1</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
+        <!-- spring boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>2.4.5</version>
+        </dependency>
+        <!-- spring web socket -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+            <version>2.4.5</version>
+        </dependency>
         <!-- mirai -->
         <dependency>
             <groupId>net.mamoe</groupId>
             <artifactId>mirai-core-jvm</artifactId>
             <version>2.6.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.mamoe</groupId>
+                    <artifactId>mirai-core-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.mamoe</groupId>
+                    <artifactId>mirai-core-utils</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.mamoe</groupId>
+            <artifactId>mirai-core-api-jvm</artifactId>
+            <version>2.6.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.mamoe</groupId>
+                    <artifactId>mirai-core-utils</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.mamoe</groupId>
+            <artifactId>mirai-core-utils-jvm</artifactId>
+            <version>2.6.2</version>
+        </dependency>
+        <!-- !important  resolve mirai ktor conflict with spring -->
+        <dependency>
+            <groupId>io.ktor</groupId>
+            <artifactId>ktor-client-core</artifactId>
+            <version>1.5.2</version>
         </dependency>
         <!-- httpclient -->
         <dependency>
@@ -29,46 +74,26 @@
 
     </dependencies>
 
-    <!-- build main -->
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.4.5</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.5.2</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>top.yuany3721.JX3Mirai.Application</mainClass>
-                        </manifest>
-                        <manifestEntries>
-                            <Class-Path>.</Class-Path>
-                        </manifestEntries>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
+                    <fork>true</fork>
+                    <mainClass>top.yuany3721.BulletBotServer.Application</mainClass>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
                         <goals>
-                            <goal>single</goal>
+                            <goal>repackage</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
+
+
 </project>
