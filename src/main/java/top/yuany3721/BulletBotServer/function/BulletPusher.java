@@ -21,14 +21,19 @@ import java.nio.charset.StandardCharsets;
 /**
  * 弹幕推送
  */
-@Function(name = "弹幕推送", usage = "开启功能/关闭功能 弹幕推送", needAdmin = true, close = true)
+@Function(name = "弹幕推送", usage = "开启功能/关闭功能 弹幕推送", close = true)
 public class BulletPusher extends MessageFunctionValidator implements FunctionInterface {
     @Override
     protected void operate(Event event, Object message) {
-        BulletBuffer.getInstance().newBullet(((PlainText)message).contentToString(), ((MessageEvent) event).getSender().getId());
+        try {
+            sendBullet(((MessageEvent)event).getBot(), ((PlainText)message).contentToString(), ((MessageEvent) event).getSender().getId());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+//        BulletBuffer.getInstance().newBullet(((PlainText)message).contentToString(), ((MessageEvent) event).getSender().getId());
     }
 
-    @Deprecated
     private void sendBullet(Bot bot, String message, Long qq) throws IOException {
         CloseableHttpClient client = null;
         CloseableHttpResponse response = null;
